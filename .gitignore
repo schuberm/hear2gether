@@ -14,3 +14,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+*.DS_store
+# Tokens
+/config/app_environment_variables.rb

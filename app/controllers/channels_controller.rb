@@ -1,5 +1,6 @@
 class ChannelsController < ApplicationController
   before_action :set_channel, only: [:show, :edit, :update, :destroy]
+  require 'soundcloud'
 
   # GET /channels
   # GET /channels.json
@@ -10,6 +11,14 @@ class ChannelsController < ApplicationController
   # GET /channels/1
   # GET /channels/1.json
   def show
+    client = Soundcloud.new(:access_token => ENV[
+"SOUNDCLOUD_ACCESS_TOKEN"])
+     # get a tracks oembed data
+    track_url = 'http://soundcloud.com/forss/flickermood'
+    embed_info = client.get('/oembed', :url => track_url)
+
+    # print the html for the player widget
+    @channel = embed_info['html']
   end
 
   # GET /channels/new
