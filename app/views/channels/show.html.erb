@@ -1,6 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<%= raw @channel%>
+<%= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
+  <%= f.text_field :querysc %>
+  <%= f.submit "Search" %>
+<% end %>
+
+<%= raw @sc_player%>
+
+<%= raw @sc_query%>
 
 <%= link_to 'Edit', edit_channel_path(@channel) %> |
 <%= link_to 'Back', channels_path %>

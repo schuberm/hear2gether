@@ -11,14 +11,13 @@ class ChannelsController < ApplicationController
   # GET /channels/1
   # GET /channels/1.json
   def show
-    client = Soundcloud.new(:access_token => ENV[
-"SOUNDCLOUD_ACCESS_TOKEN"])
+    sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
      # get a tracks oembed data
     track_url = 'http://soundcloud.com/forss/flickermood'
-    embed_info = client.get('/oembed', :url => track_url)
+    embed_info = sc_client.get('/oembed', :url => track_url)
 
-    # print the html for the player widget
-    @channel = embed_info['html']
+    @sc_player = embed_info['html']
+    @sc_query = sc_client.get('/tracks', :q => @channel.querysc)
   end
 
   # GET /channels/new
@@ -78,6 +77,6 @@ class ChannelsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def channel_params
-      params[:channel]
+      params[:channel].permit(:querysc)
     end
 end
