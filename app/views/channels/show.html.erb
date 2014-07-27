@@ -7,7 +7,11 @@
 
 <%= raw @sc_player%>
 
-<%= raw @sc_query%>
+<% @sc_query.each do |item| %>
+    <tr>
+       <%= raw item %>
+   </tr>
+<% end %>
 
 <%= link_to 'Edit', edit_channel_path(@channel) %> |
 <%= link_to 'Back', channels_path %>

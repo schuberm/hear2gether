@@ -17,7 +17,15 @@ class ChannelsController < ApplicationController
     embed_info = sc_client.get('/oembed', :url => track_url)
 
     @sc_player = embed_info['html']
-    @sc_query = sc_client.get('/tracks', :q => @channel.querysc)
+    sc_query_raw = sc_client.get('/tracks', :q => @channel.querysc)
+    @sc_query=[]
+    sc_query_raw.each do |track|
+      if track.embeddable_by=='all'
+        sc_query_embed = sc_client.get('/oembed', :url => track.permalink_url)
+        @sc_query<<sc_query_embed['html']
+      end
+    end
+
   end
 
   # GET /channels/new
