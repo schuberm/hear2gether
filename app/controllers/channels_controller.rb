@@ -12,17 +12,19 @@ class ChannelsController < ApplicationController
   # GET /channels/1.json
   def show
     sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
-     # get a tracks oembed data
+    # get a tracks oembed data
     track_url = 'http://soundcloud.com/forss/flickermood'
+    #track_url ='https://w.soundcloud.com/player/?url=http://api.soundcloud.com/users/1539950/favorites'
     embed_info = sc_client.get('/oembed', :url => track_url)
 
     @sc_player = embed_info['html']
     sc_query_raw = sc_client.get('/tracks', :q => @channel.querysc)
-    @sc_query=[]
+    puts sc_query_raw
+    @sc_query = []
     sc_query_raw.each do |track|
-      if track.embeddable_by=='all'
-        sc_query_embed = sc_client.get('/oembed', :url => track.permalink_url)
-        @sc_query<<sc_query_embed['html']
+      if track.embeddable_by =='all'
+        #sc_query_embed = sc_client.get('/oembed', :url => track.permalink_url)
+        #@sc_query << sc_query_embed['html']
       end
     end
 
