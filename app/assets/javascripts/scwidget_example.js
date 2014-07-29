@@ -6,6 +6,8 @@ $(document).ready(function(){
         "w.soundcloud.com"  : "w.soundcloud.com/player/"
       };
 
+      alert(gon.tracktime);
+
       var consoleBox = document.querySelector('.console');
 
       var forEach = Array.prototype.forEach;

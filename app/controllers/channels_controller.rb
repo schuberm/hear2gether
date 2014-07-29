@@ -19,7 +19,7 @@ class ChannelsController < ApplicationController
 
     @sc_player = embed_info['html']
     sc_query_raw = sc_client.get('/tracks', :q => @channel.querysc)
-    puts sc_query_raw
+    #puts sc_query_raw
     @sc_query = []
     sc_query_raw.each do |track|
       if track.embeddable_by =='all'
@@ -27,6 +27,9 @@ class ChannelsController < ApplicationController
         #@sc_query << sc_query_embed['html']
       end
     end
+    @sc_tracktime='test'
+    gon.tracktime=@sc_tracktime
+    puts @sc_tracktime
 
   end
 
