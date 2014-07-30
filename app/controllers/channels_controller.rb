@@ -11,6 +11,8 @@ class ChannelsController < ApplicationController
   # GET /channels/1
   # GET /channels/1.json
   def show
+    @channel=Channel.find(params[:id])
+    @chid=@channel.id
     sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
     # get a tracks oembed data
     track_url = 'http://soundcloud.com/forss/flickermood'
@@ -27,9 +29,7 @@ class ChannelsController < ApplicationController
         #@sc_query << sc_query_embed['html']
       end
     end
-    @sc_tracktime='test'
-    gon.tracktime=@sc_tracktime
-    puts params[:myLoc]
+    #puts params[:myLoc]
 
   end
 
