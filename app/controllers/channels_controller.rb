@@ -29,7 +29,7 @@ class ChannelsController < ApplicationController
     end
     @sc_tracktime='test'
     gon.tracktime=@sc_tracktime
-    puts @sc_tracktime
+    puts params[:myLoc]
 
   end
 

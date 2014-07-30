@@ -45,6 +45,15 @@ $(document).ready(function(){
           });
         }(eventName, eventKey))
       }
+      var url = '/channels/4';
+      //var myLoc = { 'lat': 35, 'lon': -110 };
+      var myLoc = JSON.stringify(eventData || {});
+
+      $.ajax({
+        type: "GET",
+        url: url,
+        data: myLoc
+      });
 
       var actionButtons = document.querySelectorAll('.actionButtons button');
       forEach.call(actionButtons, function(button) {
