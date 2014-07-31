@@ -23,7 +23,7 @@ $(document).ready(function(){
           eventName = SC.Widget.Events[eventKey];
           widget.bind(eventName, function(eventData) {
             updateConsole("SC.Widget.Events." + eventKey +  " " + JSON.stringify(eventData || {}));
-            forRails = JSON.stringify(eventData || {});
+            forRails = eventData;
 
             $.ajax({
               type: "POST",

@@ -29,8 +29,7 @@ class ChannelsController < ApplicationController
       end
     end
     @data = request.filtered_parameters
-    puts @data
-
+    puts @data['currentPosition']
   end
 
   # GET /channels/new
