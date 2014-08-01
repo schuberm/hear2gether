@@ -12,6 +12,8 @@ class ChannelsController < ApplicationController
   # GET /channels/1.json
   def show
     @channel=Channel.find(params[:id])
+    @listener=Listener.create
+    
     sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
     # get a tracks oembed data
     track_url = 'http://soundcloud.com/forss/flickermood'
@@ -45,6 +47,7 @@ class ChannelsController < ApplicationController
   # POST /channels.json
   def create
     @channel = Channel.new(channel_params)
+    @listener=Listener.create
 
     respond_to do |format|
       if @channel.save
