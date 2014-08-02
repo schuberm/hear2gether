@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140801000805) do
+ActiveRecord::Schema.define(version: 20140802161445) do
 
   create_table "channels", force: true do |t|
     t.datetime "created_at"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140801000805) do
   create_table "listeners", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "dj"
   end
 
 end

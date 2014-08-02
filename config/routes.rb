@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  resources :channels
+  resources :channels do
+    member do
+     post :eventtracker
+    end
+  end
 
-  match 'channels/:id/show' => 'channels#show', :via => :post
+  #match 'channels/:id/show' => 'channels#show', :via => :post
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

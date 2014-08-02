@@ -13,7 +13,7 @@ class ChannelsController < ApplicationController
   def show
     @channel=Channel.find(params[:id])
     @listener=Listener.create
-    
+
     sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
     # get a tracks oembed data
     track_url = 'http://soundcloud.com/forss/flickermood'
@@ -30,8 +30,15 @@ class ChannelsController < ApplicationController
         #@sc_query << sc_query_embed['html']
       end
     end
+
+  end
+
+  def eventtracker
     @data = request.filtered_parameters
     puts @data['currentPosition']
+    puts @data['state']
+    #render :text =>  @data['currentPosition']
+    render :nothing =>  true
   end
 
   # GET /channels/new
