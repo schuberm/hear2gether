@@ -24,14 +24,12 @@ function initPage(){
 
       var eventKey, eventName;
       var url= window.location.pathname+'/eventtracker';
-      //var url= 'channels/eventtracker';
       var forRails;
       for (eventKey in SC.Widget.Events) {
         (function(eventName, eventKey) {
           eventName = SC.Widget.Events[eventKey];
           widget.bind(eventName, function(eventData) {
             updateConsole("SC.Widget.Events." + eventKey +  " " + JSON.stringify(eventData || {}));
-            //forRails = $.merge(JSON.stringify(eventData),{"state": eventKey});
             forRails = eventData;
 
             $.ajax({

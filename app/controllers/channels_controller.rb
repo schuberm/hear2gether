@@ -34,11 +34,19 @@ class ChannelsController < ApplicationController
   end
 
   def eventtracker
-    @data = request.filtered_parameters
-    puts @data['currentPosition']
-    puts @data['state']
-    #render :text =>  @data['currentPosition']
-    render :nothing =>  true
+    #@listener = Listener.find(params[:id])
+    @listener = Listener.where(:dj => true).first
+    #puts @listener
+    #if @listener.dj == true
+    if @listener == nil
+      render :nothing =>  true
+    else
+      @data = request.filtered_parameters
+      puts @data['currentPosition']
+      puts @data['state']
+      #render :text =>  @data['currentPosition']
+      render :nothing =>  true
+    end
   end
 
   # GET /channels/new
@@ -54,7 +62,8 @@ class ChannelsController < ApplicationController
   # POST /channels.json
   def create
     @channel = Channel.new(channel_params)
-    @listener=Listener.create
+    @listener = Listener.create
+    @listener.dj = true
 
     respond_to do |format|
       if @channel.save
