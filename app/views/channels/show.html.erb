@@ -14,8 +14,12 @@
 <% client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"]) %>
 <% track = client.get('/resolve', :url => "http://soundcloud.com/forss/flickermood") %>
 
+<ul class="graphic">
+
 <li><a type="audio/mp3"  class="sm2_link" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>">Walking</a></li>
 <li><a type="audio/mp3" class="sm2_button" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>">Walking</a></li>
+
+ </ul>
 
 <% @sc_query.each do |item| %>
     <tr>

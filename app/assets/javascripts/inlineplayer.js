@@ -18,6 +18,7 @@ function InlinePlayer() {
   var pl = this;
   var sm = soundManager; // soundManager instance
   var isIE = (navigator.userAgent.match(/msie/i));
+  var url= window.location.pathname+'/eventtracker';
   this.playableClass = 'inline-playable'; // CSS class for forcing a link to be playable (eg. doesn't have .MP3 in it)
   this.excludeClass = 'inline-exclude'; // CSS class for ignoring MP3 links
   this.links = [];
@@ -117,7 +118,16 @@ function InlinePlayer() {
           pl.handleClick({'target':pl.links[nextLink]});
         }
       }
-    }
+    },
+
+    sendrails: function() {
+            $.ajax({
+              type: "POST",
+              url: url,
+              data: {"currentPosition":this.position},
+              dataType: "json"
+            });
+      }
 
   }
 
@@ -181,6 +191,7 @@ function InlinePlayer() {
        // onpause:self.events.pause,
        // onresume:self.events.resume,
        // onfinish:self.events.finish,
+        whileplaying:self.events.sendrails,
        type:(o.type||null)
       });
       // tack on some custom data

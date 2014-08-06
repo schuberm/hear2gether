@@ -38,15 +38,16 @@ class ChannelsController < ApplicationController
     @listener = Listener.where(:dj => true).first
     #puts @listener
     #if @listener.dj == true
-    if @listener == nil
-      render :nothing =>  true
-    else
+    #if @listener == nil
+    #  render :nothing =>  true
+    #else
       @data = request.filtered_parameters
-      puts @data['currentPosition']
-      puts @data['state']
+      puts @data
+      #puts @data['currentPosition']
+      #puts @data['state']
       #render :text =>  @data['currentPosition']
       render :nothing =>  true
-    end
+    #end
   end
 
   # GET /channels/new
