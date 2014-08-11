@@ -1,31 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<%= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
-  <%= f.text_field :querysc %>
-  <%= f.submit "Search" %>
-<% end %>
+<%#= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
+  <%#= f.text_field :querysc %>
+  <%#= f.submit "Search" %>
+<%# end %>
 
 <%#= raw @sc_player %>
 
-<div class="right">
-      <textarea class="console" wrap="off"></textarea>
-</div>
-
 <% client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"]) %>
-<% track = client.get('/resolve', :url => "http://soundcloud.com/forss/flickermood") %>
+<%# track = client.get('/resolve', :url => "https://soundcloud.com/nickraymondg/lana-del-rey-west-coast-zhu-remix") %>
+<% track = client.get('/resolve', :url => @channel.querysc) %>
 
-<ul class="graphic">
 
-<li><a type="audio/mp3"  class="sm2_link" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>">Walking</a></li>
-<li><a type="audio/mp3" class="sm2_button" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>">Walking</a></li>
+<div id="sm2_player">
+<ul  class="playlist">
+
+<li><a  type="audio/mp3"  class="sm2_link" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>"><%=track.title%></a></li>
 
  </ul>
+ </div>
 
-<% @sc_query.each do |item| %>
+<%# @sc_query.each do |item| %>
     <tr>
-       <%= raw item %>
+       <%#= raw item %>
    </tr>
-<% end %>
+<%# end %>
 
-<%= link_to 'Edit', edit_channel_path(@channel) %> |
-<%= link_to 'Back', channels_path %>
+<%#= link_to 'Edit', edit_channel_path(@channel) %> 
+<%#= link_to 'Back', channels_path %>

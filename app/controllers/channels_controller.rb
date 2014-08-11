@@ -12,24 +12,35 @@ class ChannelsController < ApplicationController
   # GET /channels/1.json
   def show
     @channel=Channel.find(params[:id])
-    @listener=Listener.create
-
-    sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
+    #@listener=Listener.create
+    #@listener = Listener.where(:dj => true).first
+    if Listener.exists?(dj: true)
+      @listener = Listener.where(:dj => true).first
+      gon.dj= @listener.dj
+      puts gon.dj
+    else
+      @listener=Listener.create
+      @listener.dj = false
+      gon.dj= @listener.dj
+      puts gon.dj
+    end
+    
+    #sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
     # get a tracks oembed data
-    track_url = 'http://soundcloud.com/forss/flickermood'
+    #track_url = 'http://soundcloud.com/forss/flickermood'
     #track_url ='https://w.soundcloud.com/player/?url=http://api.soundcloud.com/users/1539950/favorites'
-    embed_info = sc_client.get('/oembed', :url => track_url)
+    #embed_info = sc_client.get('/oembed', :url => track_url)
 
-    @sc_player = embed_info['html']
-    sc_query_raw = sc_client.get('/tracks', :q => @channel.querysc)
+    #@sc_player = embed_info['html']
+    #sc_query_raw = sc_client.get('/tracks', :q => @channel.querysc)
     #puts sc_query_raw
-    @sc_query = []
-    sc_query_raw.each do |track|
-      if track.embeddable_by =='all'
+    #@sc_query = []
+    #sc_query_raw.each do |track|
+    #  if track.embeddable_by =='all'
         #sc_query_embed = sc_client.get('/oembed', :url => track.permalink_url)
         #@sc_query << sc_query_embed['html']
-      end
-    end
+    #  end
+    #end
 
   end
 
@@ -63,8 +74,9 @@ class ChannelsController < ApplicationController
   # POST /channels.json
   def create
     @channel = Channel.new(channel_params)
-    @listener = Listener.create
-    @listener.dj = true
+    @listener = Listener.create(dj: true)
+    gon.dj= @listener.dj
+    puts gon.dj
 
     respond_to do |format|
       if @channel.save
