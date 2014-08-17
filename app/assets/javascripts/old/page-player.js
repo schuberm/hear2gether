@@ -1080,10 +1080,10 @@ function PagePlayer() {
 
 soundManager.useFlashBlock = true;
 
-soundManager.onready(function() {
-  pagePlayer = new PagePlayer();
-  pagePlayer.init(typeof PP_CONFIG !== 'undefined' ? PP_CONFIG : null);
-});
+//soundManager.onready(function() {
+//  pagePlayer = new PagePlayer();
+//  pagePlayer.init(typeof PP_CONFIG !== 'undefined' ? PP_CONFIG : null);
+//});
 };
 
 $(document).ready(ready);

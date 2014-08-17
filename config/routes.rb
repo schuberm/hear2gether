@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :channels do
     member do
      post :eventtracker
+     get  :sendChannelToDj
+     get  :sendListenerToDj
     end
   end
 

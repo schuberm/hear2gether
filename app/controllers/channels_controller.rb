@@ -11,18 +11,27 @@ class ChannelsController < ApplicationController
   # GET /channels/1
   # GET /channels/1.json
   def show
+    #gon.dj='nil'
+    #gon.currentPosition='nil'
     @channel=Channel.find(params[:id])
     #@listener=Listener.create
     #@listener = Listener.where(:dj => true).first
-    if Listener.exists?(dj: true)
-      @listener = Listener.where(:dj => true).first
-      gon.dj= @listener.dj
-      puts gon.dj
-    else
-      @listener=Listener.create
+    @listener=Listener.find(session[:current_listener_id])
+    #respond_to do |format|
+    #    format.html
+    #    format.json { render :json => @channel}
+    #end
+    #if Listener.exists?(dj: true)
+    if @listener ==nil
+      @listener=Listener.create(dj: false)
       @listener.dj = false
       gon.dj= @listener.dj
-      puts gon.dj
+      #puts gon.dj
+    elsif @listener.dj==true
+      @listener = Listener.where(:dj => true).first
+      gon.dj= @listener.dj
+      gon.currentPosition=@channel.currentPosition
+      #puts gon.dj  
     end
     
     #sc_client = Soundcloud.new(:client_id  => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
@@ -46,20 +55,45 @@ class ChannelsController < ApplicationController
 
   def eventtracker
     #@listener = Listener.find(params[:id])
-    @listener = Listener.where(:dj => true).first
+    #@listener = Listener.where(:dj => true).first
+    @listener = Listener.find(session[:current_listener_id])
     #puts @listener
     #if @listener.dj == true
-    #if @listener == nil
-    #  render :nothing =>  true
+    if @listener == nil
+      render :nothing =>  true
     #else
+    elsif @listener.dj==true
+      @channel=Channel.find(params[:id])
       @data = request.filtered_parameters
-      puts @data
-      #puts @data['currentPosition']
+      #puts @data
+      puts @data['currentPosition']
+      #@channel.currentPosition = @data['currentPosition']
+      @channel.update(currentPosition: @data['currentPosition'])
+      puts @channel.currentPosition
       #puts @data['state']
       #render :text =>  @data['currentPosition']
       render :nothing =>  true
-    #end
+    end
   end
+
+  def sendChannelToDj
+    @channel = Channel.find(params[:id])
+    respond_to do |format|
+        format.html
+        format.json { render :json => @channel}
+    end
+  end
+
+  def sendListenerToDj
+    #@channel = Channel.find(params[:id])
+    @listener = Listener.find(session[:current_listener_id])
+    #@listener = Listener.find(params[:id])
+    respond_to do |format|
+        format.html
+        format.json { render :json => @listener}
+    end
+  end
+
 
   # GET /channels/new
   def new
@@ -75,8 +109,8 @@ class ChannelsController < ApplicationController
   def create
     @channel = Channel.new(channel_params)
     @listener = Listener.create(dj: true)
-    gon.dj= @listener.dj
-    puts gon.dj
+    session[:current_listener_id] = @listener.id
+    #gon.dj= @listener.dj
 
     respond_to do |format|
       if @channel.save
@@ -121,6 +155,6 @@ class ChannelsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def channel_params
-      params[:channel].permit(:querysc)
+      params[:channel].permit(:querysc,:currentPosition)
     end
 end

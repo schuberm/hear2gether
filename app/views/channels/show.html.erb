@@ -1,12 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<%#= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
-  <%#= f.text_field :querysc %>
-  <%#= f.submit "Search" %>
-<%# end %>
-
-<%#= raw @sc_player %>
-
 <% client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"]) %>
 <%# track = client.get('/resolve', :url => "https://soundcloud.com/nickraymondg/lana-del-rey-west-coast-zhu-remix") %>
 <% track = client.get('/resolve', :url => @channel.querysc) %>
@@ -19,12 +12,3 @@
 
  </ul>
  </div>
-
-<%# @sc_query.each do |item| %>
-    <tr>
-       <%#= raw item %>
-   </tr>
-<%# end %>
-
-<%#= link_to 'Edit', edit_channel_path(@channel) %> 
-<%#= link_to 'Back', channels_path %>

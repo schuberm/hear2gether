@@ -13,4 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require soundmanager2.js
+//= require aplayer.js
 //= require_directory .
