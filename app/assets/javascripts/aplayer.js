@@ -460,13 +460,14 @@ function PagePlayer(dj,currentPosition) {
           self.lastWPExec = d;
         }
       }
-
+      if (dj==true){
       $.ajax({
               type: "POST",
               url: url,
               data: {"currentPosition":this.position},
               dataType: "json"
             });
+      };
     }
 
   }; // events{}
@@ -710,7 +711,7 @@ function PagePlayer(dj,currentPosition) {
     } 
   };
 
-  if (dj==false) {
+  this.djfalse = function(e){
     console.log("dj==false");
 
     // // a sound (or something) was clicked - determine what and handle appropriately
@@ -720,14 +721,14 @@ function PagePlayer(dj,currentPosition) {
     //   }
     //   return pl.config.allowRightClick; // ignore right-clicks
     // }
-    // var o = self.getTheDamnTarget(e),
-    //     sURL, soundURL, thisSound, oControls, oLI, str;
-    // if (!o) {
-    //   return true;
-    // }
-    // if (self.dragActive) {
-    //   self.stopDrag(); // to be safe
-    // }
+     var o = self.getTheDamnTarget(e),
+              sURL, soundURL, thisSound, oControls, oLI, str;
+     if (!o) {
+       return true;
+     }
+     if (self.dragActive) {
+         self.stopDrag(); // to be safe
+     }
     // if (self.withinStatusBar(o)) {
     //   // self.handleStatusClick(e);
     //   return false;
@@ -735,14 +736,15 @@ function PagePlayer(dj,currentPosition) {
     // if (o.nodeName.toLowerCase() !== 'a') {
     //   o = self.getParentByNodeName(o,'a');
     // }
-    // if (!o) {
-    //   // not a link
-    //   return true;
-    // }
+     if (!o) {
+       // not a link
+       return true;
+     }
 
     // // OK, we're dealing with a link
 
-    // sURL = o.getAttribute('href');
+     sURL = o.getAttribute('href');
+     console.log(sURL);
 
     // if (!o.href || (!sm.canPlayLink(o) && !self.hasClass(o,'playable')) || self.hasClass(o,'exclude')) {
 
@@ -762,51 +764,54 @@ function PagePlayer(dj,currentPosition) {
       soundURL = o.href;
       thisSound = self.getSoundByObject(o);
 
-      // if (thisSound) {
+      if (thisSound) {
 
-      //   // sound already exists
-      //   self.setPageTitle(thisSound._data.originalTitle);
-      //   if (thisSound === self.lastSound) {
-      //     // ..and was playing (or paused) and isn't in an error state
-      //     if (thisSound.readyState !== 2) {
-      //       if (thisSound.playState !== 1) {
-      //         // not yet playing
-      //           thisSound.play();
-      //       } else {
-      //         thisSound.togglePause();
-      //       }
-      //     } else {
-      //       sm._writeDebug('Warning: sound failed to load (security restrictions, 404 or bad format)',2);
-      //     }
-      //   } else {
-      //     // ..different sound
-      //     if (self.lastSound) {
-      //       self.stopSound(self.lastSound);
-      //     }
-      //     if (spectrumContainer) {
-      //       thisSound._data.oTimingBox.appendChild(spectrumContainer);
-      //     }
-      //     thisSound.togglePause(); // start playing current
-      //   }
+        // sound already exists
+        self.setPageTitle(thisSound._data.originalTitle);
+        if (thisSound === self.lastSound) {
+          // ..and was playing (or paused) and isn't in an error state
+          if (thisSound.readyState !== 2) {
+            if (thisSound.playState !== 1) {
+              // not yet playing
+                thisSound.play();
+            } else {
+              thisSound.togglePause();
+            }
+          } else {
+            sm._writeDebug('Warning: sound failed to load (security restrictions, 404 or bad format)',2);
+          }
+        } else {
+          // ..different sound
+          if (self.lastSound) {
+            self.stopSound(self.lastSound);
+          }
+          if (spectrumContainer) {
+            thisSound._data.oTimingBox.appendChild(spectrumContainer);
+          }
+          thisSound.togglePause(); // start playing current
+        }
 
-      // } else {
+      } else {
 
         // create sound
         thisSound = sm.createSound({
           id:o.id,
           url:decodeURI(soundURL),
-          autoPlay:true
-          //onplay:self.events.play,
-          //onstop:self.events.stop,
-          //onpause:self.events.pause,
-          //onresume:self.events.resume,
-          //onfinish:self.events.finish,
-          //type:(o.type||null),
-          //whileloading:self.events.whileloading,
-          //whileplaying:self.events.whileplaying,
-          //onmetadata:self.events.metadata,
-          //onload:self.events.onload
+          position:currentPosition,
+          //autoLoad:true,
+          //autoPlay:true
+          onplay:self.events.play,
+          onstop:self.events.stop,
+          onpause:self.events.pause,
+          onresume:self.events.resume,
+          onfinish:self.events.finish,
+          type:(o.type||null),
+          whileloading:self.events.whileloading,
+          whileplaying:self.events.whileplaying,
+          onmetadata:self.events.metadata,
+          onload:self.events.onload
         });
+        console.log(thisSound);
 
         // append control template
         oControls = self.oControls.cloneNode(true);
@@ -852,10 +857,14 @@ function PagePlayer(dj,currentPosition) {
           self.stopSound(self.lastSound);
         }
         self.resetGraph.apply(thisSound);
-        thisSound.setPosition(currentPosition);
-        thisSound.play();
+        //thisSound.setPosition(currentPosition);
+        thisSound.play({
+          from: 90000,
+          //autoPlay:true
+          });
+        console.log(currentPosition);
 
-      //}
+      }
 
       self.lastSound = thisSound; // reference for next call
       return self.stopEvent(e);
@@ -1231,6 +1240,9 @@ function PagePlayer(dj,currentPosition) {
     if (self.config.autoStart) {
       // grab the first ul.playlist link
         pl.handleClick({target:pl.getByClassName('playlist', 'ul')[0].getElementsByTagName('a')[0]});
+    }
+    if (dj==false){
+      pl.djfalse({target:pl.getByClassName('playlist', 'ul')[0].getElementsByTagName('a')[0]});
     }
 
   };
