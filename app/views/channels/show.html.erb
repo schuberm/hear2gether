@@ -1,7 +1,11 @@
 <p id="notice"><%= notice %></p>
 
+<%= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
+	<%= f.text_field :querysc %>
+	<%= f.submit "Search" %>
+<% end %>
+
 <% client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"]) %>
-<%# track = client.get('/resolve', :url => "https://soundcloud.com/nickraymondg/lana-del-rey-west-coast-zhu-remix") %>
 <% track = client.get('/resolve', :url => @channel.querysc) %>
 
 
@@ -10,5 +14,5 @@
 
 <li><a  type="audio/mp3"  class="sm2_link" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>"><%=track.title%></a></li>
 
- </ul>
- </div>
+</ul>
+</div>

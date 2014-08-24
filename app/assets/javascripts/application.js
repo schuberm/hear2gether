@@ -16,3 +16,5 @@
 //= require soundmanager2.js
 //= require aplayer.js
 //= require_directory .
+//= require websocket_rails/main
+

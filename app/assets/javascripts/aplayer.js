@@ -22,6 +22,7 @@
 function PagePlayer(dj,currentPosition) {
 
   var url= window.location.pathname+'/eventtracker';
+  var dispatcher = new WebSocketRails(window.location.host +'/websocket');
   var self = this,
       pl = this,
       sm = soundManager, // soundManager instance
@@ -92,7 +93,6 @@ function PagePlayer(dj,currentPosition) {
   };
 
   _event = (function() {
-    console.log("_event");
 
     var old = (window.attachEvent && !window.addEventListener),
     _slice = Array.prototype.slice,
@@ -102,9 +102,7 @@ function PagePlayer(dj,currentPosition) {
     };
 
     function getArgs(oArgs) {
-      console.log("getArgs");
       var args = _slice.call(oArgs), len = args.length;
-       console.log(args);
       if (old) {
         args[1] = 'on' + args[1]; // prefix
         if (len > 3) {
@@ -117,7 +115,6 @@ function PagePlayer(dj,currentPosition) {
     }
 
     function apply(args, sType) {
-      console.log("apply");
       var element = args.shift(),
           method = [evt[sType]];
       if (old) {
@@ -461,12 +458,15 @@ function PagePlayer(dj,currentPosition) {
         }
       }
       if (dj==true){
-      $.ajax({
-              type: "POST",
-              url: url,
-              data: {"currentPosition":this.position},
-              dataType: "json"
-            });
+      // $.ajax({
+      //         type: "POST",
+      //         url: url,
+      //         data: {"currentPosition":this.position},
+      //         dataType: "json"
+      //       });
+      currentPosition=this.position
+
+      dispatcher.trigger('new_message', {text: this.position});
       };
     }
 
@@ -561,7 +561,6 @@ function PagePlayer(dj,currentPosition) {
   };
 
   this.handleClick = function(e) {
-    console.log("handleClick");
 
     // a sound (or something) was clicked - determine what and handle appropriately
     if (e.button === 2) {
@@ -712,7 +711,7 @@ function PagePlayer(dj,currentPosition) {
   };
 
   this.djfalse = function(e){
-    console.log("dj==false");
+    //console.log("dj==false");
 
     // // a sound (or something) was clicked - determine what and handle appropriately
     // if (e.button === 2) {
@@ -744,7 +743,6 @@ function PagePlayer(dj,currentPosition) {
     // // OK, we're dealing with a link
 
      sURL = o.getAttribute('href');
-     console.log(sURL);
 
     // if (!o.href || (!sm.canPlayLink(o) && !self.hasClass(o,'playable')) || self.hasClass(o,'exclude')) {
 
@@ -811,7 +809,6 @@ function PagePlayer(dj,currentPosition) {
           onmetadata:self.events.metadata,
           onload:self.events.onload
         });
-        console.log(thisSound);
 
         // append control template
         oControls = self.oControls.cloneNode(true);
@@ -859,10 +856,9 @@ function PagePlayer(dj,currentPosition) {
         self.resetGraph.apply(thisSound);
         //thisSound.setPosition(currentPosition);
         thisSound.play({
-          from: 90000,
+          from: currentPosition,
           //autoPlay:true
           });
-        console.log(currentPosition);
 
       }
 
@@ -1213,7 +1209,6 @@ function PagePlayer(dj,currentPosition) {
     oTiming.id = '';
 
     function doEvents(action) { // action: add / remove
-       console.log("doEvents");
 
       _event[action](document,'click',self.handleClick);
 

@@ -21,8 +21,6 @@ class ChannelsController < ApplicationController
       session[:current_listener_id] = @listener.id
     elsif Listener.find(session[:current_listener_id]).dj==true
       @listener = Listener.where(:dj => true).first
-      gon.dj= @listener.dj
-      gon.currentPosition=@channel.currentPosition 
     end
 
   end
@@ -37,9 +35,9 @@ class ChannelsController < ApplicationController
       @channel=Channel.find(params[:id])
       @data = request.filtered_parameters
       #puts @data
-      puts @data['currentPosition']
+      #puts @data['currentPosition']
       @channel.update(currentPosition: @data['currentPosition'])
-      puts @channel.currentPosition
+      #puts @channel.currentPosition
       render :nothing =>  true
     end
   end
