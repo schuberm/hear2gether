@@ -1,16 +1,24 @@
 <p id="notice"><%= notice %></p>
 
-<%= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
-	<%= f.text_field :querysc %>
-	<%= f.submit "Search" %>
-<% end %>
+<%#= form_for @channel, url: {action: "show"}, html: {class: "nifty_form"} do |f| %>
+	<%#= f.text_field :querysc %>
+	<%#= f.submit "Search" %>
+<%# end %>
+
+
+<form role="form" class="search">
+	<div class="form-group">
+	<input id="mp3url" type="text" class="form-control" placeholder="Enter soundcloud URL" autofocus>
+	<button id="add2playlist" class="btn btn-primary">Add to playlist</button>
+	</div>
+</form>
 
 <% client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"]) %>
 <% track = client.get('/resolve', :url => @channel.querysc) %>
 
 
 <div id="sm2_player">
-<ul  class="playlist">
+<ul  id="playlist" class="playlist">
 
 <li><a  type="audio/mp3"  class="sm2_link" href="<%= track.stream_url %>?client_id=<%= ENV["SOUNDCLOUD_ACCESS_TOKEN"] %>"><%=track.title%></a></li>
 

@@ -5,14 +5,20 @@ ready = function() {
 	var channel;
 	var currentPosition;
 	var dj;
+	var mp3url;
+	var $list = $(".sm2_player");
+	var dispatcher = new WebSocketRails(window.location.host +'/websocket');
+
+	dispatcher.bind('add_song',function(mp3url) {
+			//$("#mp3url").val('');
+			console.log('here');
+			var $li = $("<li>").html('<a href="'+mp3url+'"></a>');
+			$("#playlist").append($li);
+			console.log($("#playlist").append($li));
+		});
 
 	if ($("#sm2_player").length !== 0){
 
-		var song = {
-			name: 'Start taking advantage of WebSockets',
-			completed: false
-		};
-    
 		channel = $.ajax({
 		  type: "GET",
 		  cache: false,
@@ -55,31 +61,30 @@ ready = function() {
 
 		soundManager.useFlashBlock = true;
 		soundManager.onready(function() {
-	  		pagePlayer = new PagePlayer(dj,currentPosition);
+	  		pagePlayer = new PagePlayer(dj,currentPosition,dispatcher);
 	  		pagePlayer.init(typeof PP_CONFIG !== 'undefined' ? PP_CONFIG : null);
 		});
 
-		//var dispatcher = new WebSocketRails(window.location.host +'/websocket');
+
+		$("#add2playlist").click(function() {
+			mp3url = $("#mp3url").val();
+			console.log(mp3url);
+			dispatcher.trigger('add_song',{text: mp3url});
+			// $("#mp3url").val('');
+			// var $li = $("<li>").html('<a href="'+mp3url+'"></a>');
+			// $("#playlist").append($li);
+			// console.log($("#playlist").append($li));
+			return false;
+		});
+		// ("#mp3url").keypress(function(e) {
+		// 		if(e.keyCode == 13) {
+		// 			$("#add2playlist").click()
+		// 		}
+		// });
 		
-		//dispatcher.trigger('new_message', currentPosition);
-
-		//var success = function(song) { console.log("Created: " + song.name); };
-
-		//var failure = function(song) {
-  		//		console.log("Failed to create Song: " + song.name)
-		//};
-
-		//dispatcher.trigger('songs.create', song,success(song),failure(song));
-
-
-
-		//dispatcher.bind('song.new_message', function(song) {
-  		//	console.log('successfully created ' + currentPosition);
-		//});
-
 		if (dj==false){
 		//$("#sm2_player").click(function() { alert('test'); });
-		$("#sm2_player").click(function() { return false; });
+			$("#sm2_player").click(function() { return false; });
 		//$("#sm2_player").click(function(e) { e.stopPropagation(); });
 		};
 	};

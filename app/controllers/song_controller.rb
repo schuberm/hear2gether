@@ -13,12 +13,19 @@ class SongController < WebsocketRails::BaseController
   end
   
   def new_message
-    #puts "Message from UID: #{client_id}\n"
+    puts "Message from UID: #{client_id}"
     #@message_counter += 1
     #puts @message_counter
     puts message[:text]
     broadcast_message :new_message, message
     #puts :new_message
+  end
+
+  def add_song
+    #puts "Add song to playlist from UID: #{client_id}"
+    #puts song
+    #song = Song.new message
+    broadcast_message :add_song, message
   end
   
   def new_user

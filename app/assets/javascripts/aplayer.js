@@ -19,10 +19,10 @@
 //var ready;
 //ready = function() {
 //var pagePlayer = null;
-function PagePlayer(dj,currentPosition) {
+function PagePlayer(dj,currentPosition,dispatcher) {
 
   var url= window.location.pathname+'/eventtracker';
-  var dispatcher = new WebSocketRails(window.location.host +'/websocket');
+//  var dispatcher = new WebSocketRails(window.location.host +'/websocket');
   var self = this,
       pl = this,
       sm = soundManager, // soundManager instance
