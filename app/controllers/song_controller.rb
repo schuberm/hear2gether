@@ -1,10 +1,15 @@
 class SongController < WebsocketRails::BaseController
-  
+  require 'soundcloud'
   attr_accessor :message_counter
+  attr_accessor :client
+  #@client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
 
   def initialize_session
     puts "Session Initialized\n"
     @message_counter = 0
+    #@client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
+    #track = client.get('/resolve', :url => "https://soundcloud.com/gorgon-city/sets/unmissable") 
+  	#puts track
   end
   
   def client_connected
@@ -25,7 +30,16 @@ class SongController < WebsocketRails::BaseController
     #puts "Add song to playlist from UID: #{client_id}"
     #puts song
     #song = Song.new message
-    broadcast_message :add_song, message
+    #message = message[:text]
+    #puts @message_counter
+    client = Soundcloud.new(:client_id => ENV["SOUNDCLOUD_ACCESS_TOKEN"])
+    #track = client.get('/resolve', :url => "https://soundcloud.com/gorgon-city/sets/unmissable")
+    track = client.get('/resolve', :url => message[:text])
+    t=track.stream_url#+'?client_id='+ENV["SOUNDCLOUD_ACCESS_TOKEN"]
+    puts t
+    #test='test'
+    #broadcast_message :add_song, message[:text]+test
+    broadcast_message :add_song, {track: track}
   end
   
   def new_user

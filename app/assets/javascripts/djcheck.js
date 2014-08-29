@@ -9,12 +9,14 @@ ready = function() {
 	var $list = $(".sm2_player");
 	var dispatcher = new WebSocketRails(window.location.host +'/websocket');
 
-	dispatcher.bind('add_song',function(mp3url) {
+	dispatcher.bind('add_song',function(mp3) {
 			//$("#mp3url").val('');
-			console.log('here');
-			var $li = $("<li>").html('<a href="'+mp3url+'"></a>');
+			console.log((mp3["track"]).permalink_url);
+			//scobject=JSON.parse(mp3["track"]);
+			//console.log(scobject.permalink_url);
+			var $li = $("<li>").html('<a href="'+mp3["track"]+'"></a>');
 			$("#playlist").append($li);
-			console.log($("#playlist").append($li));
+			//console.log($("#playlist").append($li));
 		});
 
 	if ($("#sm2_player").length !== 0){
