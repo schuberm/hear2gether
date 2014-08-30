@@ -11,10 +11,10 @@ ready = function() {
 
 	dispatcher.bind('add_song',function(mp3) {
 			//$("#mp3url").val('');
-			console.log((mp3["track"]).permalink_url);
+			//console.log((mp3["track"]).permalink_url);
 			//scobject=JSON.parse(mp3["track"]);
 			//console.log(scobject.permalink_url);
-			var $li = $("<li>").html('<a href="'+mp3["track"]+'"></a>');
+			var $li = $("<li>").html('<a class="sm2_link" href="'+mp3["track"]+'" type="audio/mp3">"'+mp3["title"]+'"</a>');
 			$("#playlist").append($li);
 			//console.log($("#playlist").append($li));
 		});
